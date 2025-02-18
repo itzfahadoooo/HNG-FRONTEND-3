@@ -25,17 +25,14 @@ export const detectLanguage = async (text) => {
       const results = await detector.detect(text);
       if (results.length > 0) {
         console.log("Language Detected:", results[0].detectedLanguage, "with confidence:", results[0].confidence);
-        return {
-          language: results[0].detectedLanguage,
-          confidence: results[0].confidence
-        };
+        return results[0].detectedLanguage;
       } else {
         console.warn("No language detected.");
-        return null;
+        return "unknown";
       }
     } else {
       console.error("Language Detection API is not supported on this browser.");
-      return null;
+      return "unsupported";
     }
   };
   
