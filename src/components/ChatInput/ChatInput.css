@@ -1,6 +1,5 @@
 .chat-input-container {
-  display: flex;
-  gap: 8px;
+  display: grid;
 }
 
 .chat-input-container textarea {
@@ -30,8 +29,58 @@
   border-radius: 4px;
   cursor: pointer;
 }
+.chat-input-1{
+  flex: 1;
+  resize: none;
+  padding: 8px;
+  border-radius: 4px;
+  /* border: 1px solid #1f201f; */
+  gap: 20px;
+  color: #fff;
+  display: flex;
+  outline: none;
+  transition: border-color 0.3s ease;
+  font-family: "Poppins", serif;
+  font-size: 14px;
+}
+.chat-input-2{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  padding:0 8px ;
+}
+.input-textarea {
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.input-actions {
+  display: flex;
+  align-items: center;
+}
+
+.language-selector {
+  padding: 4px;
+  border-radius: 4px;
+  background-color: #191919;
+  color: #fff;
+  outline: none;
+  border: 1px solid #191919;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+
 .fa-paper-plane {
-  font-size: 35px;
+  font-size: 25px;
 }
 
 .chat-input-container button:hover {
