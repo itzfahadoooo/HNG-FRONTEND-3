@@ -2,14 +2,22 @@ import  { useState } from 'react';
 import ChatInput from './components/ChatInput/ChatInput';
 import ChatOutput from './components/ChatOutput/ChatOutput';
 import './App.css';
+import { detectLanguage } from './languagedetection';
+
 
 function App() {
   const [messages, setMessages] = useState([]);
 
-  const handleSend = (text) => {
+  const handleSend = async (text) => {
     setMessages([...messages, { text, type: 'user' }]);
-    // TODO: Add language detection and processing here
+    const language = await detectLanguage(text);
+    console.log("Detected Language:", language);
+  
+    // You can now use the detected language for further processing
+    setMessages([...messages, { text, type: 'user', language }]);
+
   };
+  
 
   return (
     <div className="app-container">

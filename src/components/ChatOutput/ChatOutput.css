@@ -23,4 +23,20 @@
     background-color: #f1f1f1;
     color: #333;
   }
+  .message.info {
+    color: green;
+    font-style: italic;
+  }
+  
+  .message.error {
+    color: red;
+    font-weight: bold;
+  }
+  .detected-language {
+    color: #fff;
+    font-style: italic;
+    font-size: 0.85em;
+    margin-top: 4px;
+  }
+  
   
