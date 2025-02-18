@@ -20,7 +20,7 @@ const ChatInput = ({ onSend }) => {
         placeholder="Type your message..."
       />
       <button onClick={handleSend}>
-        Send
+        <i className="fa-regular fa-paper-plane"></i>
       </button>
     </div>
   );

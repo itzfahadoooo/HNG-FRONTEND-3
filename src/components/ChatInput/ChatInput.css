@@ -8,19 +8,24 @@
     resize: none;
     padding: 8px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #1f201f;
+    background-color: #191919;
+    color: #fff;
   }
   
   .chat-input-container button {
     padding: 8px 12px;
-    background-color: #007bff;
+    background-color: #000;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
   }
+  .fa-paper-plane{
+    font-size: 25px;
+  }
   
   .chat-input-container button:hover {
-    background-color: #0056b3;
+    background-color: #191919;
   }
   
