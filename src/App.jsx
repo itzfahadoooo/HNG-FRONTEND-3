@@ -9,7 +9,8 @@ function App() {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
-  const [summarizer, setSummarizer] = useState(null); // Store the summarizer instance
+  const [summarizer, setSummarizer] = useState(null);
+  const [translator, setTranslator] = useState(null); // Store translator instance
 
   const initializeTranslator = async (sourceLanguage, targetLanguage) => {
     try {
@@ -22,7 +23,6 @@ function App() {
       const capabilities = await self.ai.translator.capabilities();
       console.log("📝 Full Capabilities Data:", capabilities);
 
-      // Check if `capabilities.supportedLanguages` exists and is an object
       if (
         capabilities?.supportedLanguages &&
         typeof capabilities.supportedLanguages === "object"
@@ -31,23 +31,16 @@ function App() {
           "🌍 Supported Language Pairs:",
           Object.entries(capabilities.supportedLanguages)
         );
-
-        // Extract and format supported languages
-        const supportedLangs = Object.keys(capabilities.supportedLanguages);
-        console.log("✅ Final Supported Languages List:", supportedLangs);
       } else {
         console.log("⚠️ No supported languages found.");
       }
-      console.log("🔍 Available keys in capabilities:", Object.keys(capabilities));
 
-
-      console.log(`Supported languages:`, capabilities.supportedLanguages);
       console.log(`Checking ${sourceLanguage} → ${targetLanguage} support...`);
-
       const availability = capabilities.languagePairAvailable(
         sourceLanguage,
         targetLanguage
       );
+
       console.log(
         `🛠 Availability for ${sourceLanguage} → ${targetLanguage}:`,
         availability
@@ -60,31 +53,25 @@ function App() {
         return null;
       }
 
-      const translator = await self.ai.translator.create({
+      const translatorInstance = await self.ai.translator.create({
         sourceLanguage,
         targetLanguage,
         monitor(m) {
           m.addEventListener("downloadprogress", (e) => {
-            console.log(
-              `📥 Downloading model... ${e.loaded} of ${e.total} bytes.`
-            );
+            console.log(`📥 Downloading model... ${e.loaded} of ${e.total} bytes.`);
           });
         },
       });
 
-      await translator.ready;
-      console.log(
-        `✅ Translator ready for ${sourceLanguage} → ${targetLanguage}`
-      );
-      return translator;
+      await translatorInstance.ready;
+      console.log(`✅ Translator ready for ${sourceLanguage} → ${targetLanguage}`);
+      setTranslator(translatorInstance); // Store translator instance in state
     } catch (error) {
       console.error("❌ Error initializing Translator:", error);
       alert("An error occurred while initializing the Translator API.");
-      return null;
     }
   };
 
-  // Reinitialize Translator when language changes
   useEffect(() => {
     initializeTranslator("en", selectedLanguage);
   }, [selectedLanguage]);
@@ -149,18 +136,34 @@ function App() {
       console.log("✅ Summary generated:", summary);
       setOutputText(summary);
 
-      setMessages([
-        ...messages,
-        { text: summary, type: "bot", language: "en" },
-      ]);
+      setMessages([...messages, { text: summary, type: "bot", language: "en" }]);
     } catch (error) {
       console.error("❌ Error summarizing text:", error);
       alert("❌ An error occurred while summarizing. Please try again.");
     }
   };
 
-  const handleTranslate = () => {
-    alert(`Translate to ${selectedLanguage} feature coming soon!`);
+  const handleTranslate = async () => {
+    if (!translator) {
+      alert("❌ Translator API is not ready. Try again later.");
+      return;
+    }
+
+    if (!inputText.trim()) {
+      alert("❌ Please enter some text to translate.");
+      return;
+    }
+
+    try {
+      console.log("🌍 Translating text...");
+      const translatedText = await translator.translate(inputText);
+      console.log("✅ Translation completed:", translatedText);
+      setOutputText(translatedText);
+      setMessages([...messages, { text: translatedText, type: "bot", language: selectedLanguage }]);
+    } catch (error) {
+      console.error("❌ Error translating text:", error);
+      alert("❌ An error occurred while translating. Please try again.");
+    }
   };
 
   return (
