@@ -1,39 +1,35 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import "./ChatInput.css";
 
 const ChatInput = ({
   onSend,
+  inputText,
+  setInputText,
   selectedLanguage,
   setSelectedLanguage,
   onSummarize,
   onTranslate,
 }) => {
-  const [inputText, setInputText] = useState("");
 
   const handleSend = () => {
     if (inputText.trim()) {
       onSend(inputText);
-      setInputText("");
     }
   };
 
   return (
     <div className="chat-input-container">
       <div className="chat-input-1">
-      <textarea
+        <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Type your message..."
           className="input-textarea"
-      />
-        
+        />
         <button className="send-icon" onClick={handleSend}>
-        <i className="fa-regular fa-paper-plane"></i>
-      </button>
+          <i className="fa-regular fa-paper-plane"></i>
+        </button>
       </div>
-      
-      
       <div className="chat-input-2">
         <div className="input-actions">
           <select
@@ -44,9 +40,9 @@ const ChatInput = ({
             <option value="en">English</option>
             <option value="pt">Portuguese</option>
             <option value="es">Spanish</option>
-            <option value="ru">Russian </option>
-            <option value="tr">Turkish </option>
-            <option value="fr">French </option>
+            <option value="ru">Russian</option>
+            <option value="tr">Turkish</option>
+            <option value="fr">French</option>
           </select>
         </div>
         <div className="action-buttons">
@@ -57,17 +53,15 @@ const ChatInput = ({
             Translate
           </button>
         </div>
-        
-        
       </div>
-      
-    
     </div>
   );
 };
 
 ChatInput.propTypes = {
   onSend: PropTypes.func.isRequired,
+  inputText: PropTypes.string.isRequired,
+  setInputText: PropTypes.func.isRequired,
   selectedLanguage: PropTypes.string.isRequired,
   setSelectedLanguage: PropTypes.func.isRequired,
   onSummarize: PropTypes.func.isRequired,
