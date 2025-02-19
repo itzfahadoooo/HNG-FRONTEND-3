@@ -11,6 +11,11 @@ function App() {
   const [outputText, setOutputText] = useState("");
   const [summarizer, setSummarizer] = useState(null);
   const [translator, setTranslator] = useState(null); // Store translator instance
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setDarkMode((prevMode) => !prevMode);
+  };
 
   const initializeTranslator = async (sourceLanguage, targetLanguage) => {
     try {
@@ -167,7 +172,18 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
+      <div className="app-con1">
+        <h1 className="title-1">Linguify</h1>
+      <button className="toggle-btn" onClick={toggleTheme}>
+        {darkMode ? (
+          <i className="fas fa-sun"></i> // Sun icon for light mode
+        ) : (
+          <i className="fas fa-moon"></i> // Moon icon for dark mode
+        )}
+      </button>
+      </div>
+      
       <div className="chat-output">
         <ChatOutput messages={messages} />
       </div>

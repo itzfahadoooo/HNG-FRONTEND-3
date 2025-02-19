@@ -9,6 +9,39 @@
     overflow: hidden;
     background-color: #000;
   }
+  .app-con1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #191919;
+    margin: 0 200px;
+    border-radius:0 0 20px 20px;
+  }
+  .title-1{
+    color: #fff;
+    font-family: "Jacquard 12", serif;
+  font-weight: 400;
+  font-style: normal;
+  }
+  
+  .toggle-btn {
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    background: transparent;
+    transition: color 0.3s;
+  }
+  
+  .light-mode .toggle-btn {
+    color: #4b4a4a; /* Dark icon in light mode */
+  }
+  
+  .dark-mode .toggle-btn {
+    color: #f0f0f0; /* Light icon in dark mode */
+  }
+  
   
   .chat-output {
     flex: 1;
@@ -20,4 +53,3 @@
     border-top: 1px solid #1f201f;
     padding: 8px;
   }
-  

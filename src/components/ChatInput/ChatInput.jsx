@@ -29,6 +29,7 @@ const ChatInput = ({
         <button className="send-icon" onClick={handleSend}>
           <i className="fa-regular fa-paper-plane"></i>
         </button>
+        
       </div>
       <div className="chat-input-2">
         <div className="input-actions">

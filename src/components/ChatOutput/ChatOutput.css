@@ -20,8 +20,8 @@
   
   .chat-message.bot {
     align-self: flex-start;
-    background-color: #f1f1f1;
-    color: #333;
+    background-color: #191919;
+    color: #fff;
   }
   .message.info {
     color: green;
