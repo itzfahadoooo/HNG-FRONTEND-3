@@ -11,6 +11,14 @@ const ChatInput = ({
   onTranslate,
   isLoading
 }) => {
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // Prevent new line in input
+      if (inputText.trim()) {
+        onSend(inputText);
+      }
+    }
+  };
 
   const handleSend = () => {
     if (inputText.trim()) {
@@ -24,6 +32,7 @@ const ChatInput = ({
         <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Type your message..."
           className="input-textarea"
         />

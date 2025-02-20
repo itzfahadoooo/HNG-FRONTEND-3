@@ -24,7 +24,12 @@
     color: #fff;
   }
   .light-mode .chat-message.bot{
-    background-color: #000;
+    background-color: #b8b4b4;
+    color: #000;
+  }
+  .light-mode .chat-message.user{
+    background-color: #2cde2c;
+    color: #000;
   }
   .message.info {
     color: green;
@@ -42,7 +47,7 @@
     margin-top: 4px;
   }
   .light-mode .detected-language{
-    color: white;
+    color: #000;
 
   }
   
@@ -64,6 +69,10 @@
     font-size: 12px;
     margin-top: 5px;
   }
+  .light-mode .summarize-btn{
+    background-color: #545353;
+    color: #000;
+  }
 
   .summarize-btn:disabled{
     background-color: gray;
@@ -73,5 +82,9 @@
   
   .summarize-btn:hover {
     background-color: #191919;
+  }
+  .light-mode .summarize-btn:hover{
+    
+    background-color: #8d8c8c;
   }
   
