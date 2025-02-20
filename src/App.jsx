@@ -172,20 +172,21 @@ function App() {
       return;
     }
 
-    if (!inputText.trim()) {
-      toast.error("❌ Please enter some text to summarize.", {
-        duration: 4000,
-        style: {
-          background: "#000",
-          color: "#fff",
-        },
-      });
-      return;
-    }
+    const lastUserMessage = messages.findLast((msg) => msg.type === "user");
+
+  if (!lastUserMessage || !lastUserMessage.text.trim()) {
+    toast.error("❌ No user message available to summarize.");
+    return;
+  }
+
+  if (lastUserMessage.text.length < 150) {
+    toast.error("❌ Text must be at least 150 characters to summarize.");
+    return;
+  }
 
     try {
       console.log("📜 Summarizing text...");
-      const summary = await summarizer.summarize(inputText, {
+      const summary = await summarizer.summarize(lastUserMessage.text, {
         context: "Summarizing user input for better understanding.",
       });
 
@@ -230,7 +231,7 @@ function App() {
     }
   
     if (!inputText.trim()) {
-      toast.error("❌ Please enter some text to translate.");
+      toast.error("❌ Please enter some text in the input field to translate.");
       return;
     }
   
