@@ -12,7 +12,7 @@ const ChatOutput = ({ messages, onSummarize, isLoading }) => {
   };
 
   return (
-    <div className="chat-output-container">
+    <div className="chat-output-container" >
       {messages.map((msg, index) => (
         <div key={index} className={`chat-message message ${msg.type}`}>
           <p>{msg.text}</p>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChatInput from "./components/ChatInput/ChatInput";
 import ChatOutput from "./components/ChatOutput/ChatOutput";
 import "./App.css";
@@ -14,6 +14,14 @@ function App() {
   const [translator, setTranslator] = useState(null); // Store translator instance
   const [isLoading, setIsLoading] = useState(false);
 
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+  
 
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark" // Ensure proper theme loading
@@ -277,7 +285,7 @@ function App() {
           </button>
         </div>
 
-        <div className="chat-output">
+        <div className="chat-output" ref={chatContainerRef} >
           <ChatOutput messages={messages} onSummarize={handleSummarize} onTranslate={handleTranslate} 
             isLoading={isLoading} />
         </div>
