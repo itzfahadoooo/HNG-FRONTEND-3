@@ -1,3 +1,26 @@
+/* Scrollbar width */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* For horizontal scrollbar */
+}
+
+/* Scrollbar track (background) */
+::-webkit-scrollbar-track {
+  background: #323232; /* Light gray background */
+  border-radius: 10px;
+}
+
+/* Scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background: #0e0d0d; /* Blue thumb */
+  border-radius: 10px;
+}
+
+/* On hover, scrollbar thumb changes */
+::-webkit-scrollbar-thumb:hover {
+  background: #357ABD; /* Darker blue */
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -21,8 +44,6 @@
   background-color: #fff;
   color: #000;
   border: 1px solid #000;
-
-
 }
 
 .app-con1 {

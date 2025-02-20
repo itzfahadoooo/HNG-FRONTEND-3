@@ -5,7 +5,6 @@ import "./App.css";
 import { detectLanguage } from "./languagedetection";
 import { Toaster, toast } from "react-hot-toast";
 
-
 function App() {
   const [messages, setMessages] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState("en");
@@ -13,8 +12,7 @@ function App() {
   const [outputText, setOutputText] = useState("");
   const [summarizer, setSummarizer] = useState(null);
   const [translator, setTranslator] = useState(null); // Store translator instance
-  
-  
+
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark" // Ensure proper theme loading
   );
@@ -36,7 +34,13 @@ function App() {
   const initializeTranslator = async (sourceLanguage, targetLanguage) => {
     try {
       if (!("ai" in self && "translator" in self.ai)) {
-        toast.error("❌ Translator API is not supported in this browser.");
+        toast.error("❌ Translator API is not supported in this browser.", {
+          duration: 4000,
+          style: {
+            background: "#000",
+            color: "#fff",
+          },
+        });
         return null;
       }
 
@@ -69,7 +73,13 @@ function App() {
 
       if (availability === "no") {
         toast.error(
-          `❌ Translation from ${sourceLanguage} to ${targetLanguage} is not supported.`
+          `❌ Translation from ${sourceLanguage} to ${targetLanguage} is not supported.`, {
+            duration: 4000,
+            style: {
+              background: "#000",
+              color: "#fff",
+            },
+          }
         );
         return null;
       }
@@ -79,17 +89,27 @@ function App() {
         targetLanguage,
         monitor(m) {
           m.addEventListener("downloadprogress", (e) => {
-            console.log(`📥 Downloading model... ${e.loaded} of ${e.total} bytes.`);
+            console.log(
+              `📥 Downloading model... ${e.loaded} of ${e.total} bytes.`
+            );
           });
         },
       });
 
       await translatorInstance.ready;
-      console.log(`✅ Translator ready for ${sourceLanguage} → ${targetLanguage}`);
+      console.log(
+        `✅ Translator ready for ${sourceLanguage} → ${targetLanguage}`
+      );
       setTranslator(translatorInstance); // Store translator instance in state
     } catch (error) {
       console.error("❌ Error initializing Translator:", error);
-      toast.error("An error occurred while initializing the Translator API.");
+      toast.error("An error occurred while initializing the Translator API.", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
     }
   };
 
@@ -139,12 +159,24 @@ function App() {
 
   const handleSummarize = async () => {
     if (!summarizer) {
-      toast.error("❌ Summarizer API is not ready. Try again later.");
+      toast.error("❌ Summarizer API is not ready. Try again later.", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
       return;
     }
 
     if (!inputText.trim()) {
-      toast.error("❌ Please enter some text to summarize.");
+      toast.error("❌ Please enter some text to summarize.", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
       return;
     }
 
@@ -156,22 +188,50 @@ function App() {
 
       console.log("✅ Summary generated:", summary);
       setOutputText(summary);
+      toast.success("✅ Summarization completed successfully!", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
 
-      setMessages([...messages, { text: summary, type: "bot", language: "en" }]);
+      setMessages([
+        ...messages,
+        { text: summary, type: "bot", language: "en" },
+      ]);
     } catch (error) {
       console.error("❌ Error summarizing text:", error);
-      toast.error("❌ An error occurred while summarizing. Please try again.");
+      toast.error("❌ An error occurred while summarizing. Please try again.", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
     }
   };
 
   const handleTranslate = async () => {
     if (!translator) {
-      toast.error("❌ Translator API is not ready. Try again later.");
+      toast.error("❌ Translator API is not ready. Try again later.", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
       return;
     }
 
     if (!inputText.trim()) {
-      toast.error("❌ Please enter some text to translate.");
+      toast.error("❌ Please enter some text to translate.", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
       return;
     }
 
@@ -180,27 +240,44 @@ function App() {
       const translatedText = await translator.translate(inputText);
       console.log("✅ Translation completed:", translatedText);
       setOutputText(translatedText);
-      setMessages([...messages, { text: translatedText, type: "bot", language: selectedLanguage }]);
+      toast.success("✅ Translation completed successfully!", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
+
+      setMessages([
+        ...messages,
+        { text: translatedText, type: "bot", language: selectedLanguage },
+      ]);
     } catch (error) {
       console.error("❌ Error translating text:", error);
-      toast.error("❌ An error occurred while translating. Please try again.");
+      toast.error("❌ An error occurred while translating. Please try again.", {
+        duration: 4000,
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      });
     }
   };
 
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
-            <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" reverseOrder={false} />
       <div className={`app-con1 ${darkMode ? "dark-mode" : "light-mode"}`}>
         <h1 className="title-1">Linguify</h1>
-      <button className="toggle-btn" onClick={toggleTheme}>
-        {darkMode ? (
-          <i className="fas fa-sun"></i> // Sun icon for light mode
-        ) : (
-          <i className="fas fa-moon"></i> // Moon icon for dark mode
-        )}
-      </button>
+        <button className="toggle-btn" onClick={toggleTheme}>
+          {darkMode ? (
+            <i className="fas fa-sun"></i> // Sun icon for light mode
+          ) : (
+            <i className="fas fa-moon"></i> // Moon icon for dark mode
+          )}
+        </button>
       </div>
-      
+
       <div className="chat-output">
         <ChatOutput messages={messages} />
       </div>
