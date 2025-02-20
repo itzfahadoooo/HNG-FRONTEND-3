@@ -11,10 +11,24 @@ function App() {
   const [outputText, setOutputText] = useState("");
   const [summarizer, setSummarizer] = useState(null);
   const [translator, setTranslator] = useState(null); // Store translator instance
-  const [darkMode, setDarkMode] = useState(false);
+  
+  
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark" // Ensure proper theme loading
+  );
 
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setDarkMode(storedTheme === "dark");
+    }
+  }, []);
+
+  // Toggle light and dark mode
   const toggleTheme = () => {
-    setDarkMode((prevMode) => !prevMode);
+    const newTheme = darkMode ? "light" : "dark";
+    setDarkMode(!darkMode);
+    localStorage.setItem("theme", newTheme);
   };
 
   const initializeTranslator = async (sourceLanguage, targetLanguage) => {
@@ -173,7 +187,7 @@ function App() {
 
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
-      <div className="app-con1">
+      <div className={`app-con1 ${darkMode ? "dark-mode" : "light-mode"}`}>
         <h1 className="title-1">Linguify</h1>
       <button className="toggle-btn" onClick={toggleTheme}>
         {darkMode ? (

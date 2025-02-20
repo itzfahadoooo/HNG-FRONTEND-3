@@ -23,6 +23,9 @@
     background-color: #191919;
     color: #fff;
   }
+  .light-mode .chat-message.bot{
+    background-color: #000;
+  }
   .message.info {
     color: green;
     font-style: italic;
@@ -37,6 +40,10 @@
     font-style: italic;
     font-size: 0.85em;
     margin-top: 4px;
+  }
+  .light-mode .detected-language{
+    color: white;
+
   }
   
   

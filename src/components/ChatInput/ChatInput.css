@@ -16,6 +16,10 @@
   font-family: "Poppins", serif;
   font-size: 14px;
 }
+
+.light-mode .chat-input-container textarea{
+  background-color: #000;
+}
 .chat-input-container textarea:focus {
   border-color: #373636;
   box-shadow: 0 0 4px rgba(71, 70, 70, 100);
@@ -72,10 +76,14 @@
   outline: none;
   border: 1px solid #191919;
 }
+.light-mode .language-selector{
+  background-color: #000;
+}
 
 .action-buttons {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 
