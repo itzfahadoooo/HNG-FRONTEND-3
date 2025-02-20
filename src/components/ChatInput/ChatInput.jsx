@@ -9,6 +9,7 @@ const ChatInput = ({
   setSelectedLanguage,
   onSummarize,
   onTranslate,
+  isLoading
 }) => {
 
   const handleSend = () => {
@@ -47,11 +48,12 @@ const ChatInput = ({
           </select>
         </div>
         <div className="action-buttons">
-          <button onClick={onSummarize} className="summarize-button">
-            Summarize
+          <button  onClick={onSummarize} className="summarize-button action-button"   disabled={isLoading}
+          >
+            {isLoading ? "Summarizing..." : "Summarize"}
           </button>
-          <button onClick={onTranslate} className="translate-button">
-            Translate
+          <button onClick={onTranslate} className="translate-button action-button" disabled={isLoading}>
+            {isLoading ? "Translating..." : "Translate"}
           </button>
         </div>
       </div>
@@ -67,6 +69,7 @@ ChatInput.propTypes = {
   setSelectedLanguage: PropTypes.func.isRequired,
   onSummarize: PropTypes.func.isRequired,
   onTranslate: PropTypes.func.isRequired,
+  isLoading: PropTypes.string,
 };
 
 export default ChatInput;

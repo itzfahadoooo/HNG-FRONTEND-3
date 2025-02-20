@@ -12,6 +12,8 @@ function App() {
   const [outputText, setOutputText] = useState("");
   const [summarizer, setSummarizer] = useState(null);
   const [translator, setTranslator] = useState(null); // Store translator instance
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark" // Ensure proper theme loading
@@ -74,12 +76,12 @@ function App() {
       if (availability === "no") {
         toast.error(
           `❌ Translation from ${sourceLanguage} to ${targetLanguage} is not supported.`, {
-            duration: 4000,
-            style: {
-              background: "#000",
-              color: "#fff",
-            },
-          }
+          duration: 4000,
+          style: {
+            background: "#000",
+            color: "#fff",
+          },
+        }
         );
         return null;
       }
@@ -114,10 +116,10 @@ function App() {
   };
 
   useEffect(() => {
-  if (selectedLanguage !== "en") {
-    initializeTranslator("en", selectedLanguage);
-  }
-}, [selectedLanguage]);
+    if (selectedLanguage !== "en") {
+      initializeTranslator("en", selectedLanguage);
+    }
+  }, [selectedLanguage]);
 
 
   useEffect(() => {
@@ -174,17 +176,19 @@ function App() {
 
     const lastUserMessage = messages.findLast((msg) => msg.type === "user");
 
-  if (!lastUserMessage || !lastUserMessage.text.trim()) {
-    toast.error("❌ No user message available to summarize.");
-    return;
-  }
+    if (!lastUserMessage || !lastUserMessage.text.trim()) {
+      toast.error("❌ No user message available to summarize.");
+      return;
+    }
 
-  if (lastUserMessage.text.length < 150) {
-    toast.error("❌ Text must be at least 150 characters to summarize.");
-    return;
-  }
+    if (lastUserMessage.text.length < 150) {
+      toast.error("❌ Text must be at least 150 characters to summarize.");
+      return;
+    }
 
     try {
+      setIsLoading(true);  // Show loading state
+
       console.log("📜 Summarizing text...");
       const summary = await summarizer.summarize(lastUserMessage.text, {
         context: "Summarizing user input for better understanding.",
@@ -213,77 +217,84 @@ function App() {
           color: "#fff",
         },
       });
-    }
-  };
+    } finally {
+      setIsLoading(false);
+    };
+  }
 
-  const handleTranslate = async () => {
-    if (selectedLanguage === "en") {
-      toast.error("❌ Translation from English to English is not supported.", {
-        duration: 4000,
-        style: { background: "#000", color: "#fff" },
-      });
-      return;
-    }
+    const handleTranslate = async () => {
+      if (selectedLanguage === "en") {
+        toast.error("❌ Translation from English to English is not supported.", {
+          duration: 4000,
+          style: { background: "#000", color: "#fff" },
+        });
+        return;
+      }
   
-    if (!translator) {
-      toast.error("❌ Translator API is not ready. Try again later.");
-      return;
-    }
+      if (!translator) {
+        toast.error("❌ Translator API is not ready. Try again later.");
+        return;
+      }
   
-    if (!inputText.trim()) {
-      toast.error("❌ Please enter some text in the input field to translate.");
-      return;
-    }
+      if (!inputText.trim()) {
+        toast.error("❌ Please enter some text in the input field to translate.");
+        return;
+      }
   
-    try {
-      console.log(`🌍 Translating from English to ${selectedLanguage}...`);
-      const translatedText = await translator.translate(inputText);
-      console.log("✅ Translation completed:", translatedText);
-      setOutputText(translatedText);
-      toast.success("✅ Translation completed successfully!");
+      try {
+        setIsLoading(true);  // Show loading state
+
+        console.log(`🌍 Translating from English to ${selectedLanguage}...`);
+        const translatedText = await translator.translate(inputText);
+        console.log("✅ Translation completed:", translatedText);
+        setOutputText(translatedText);
+        toast.success("✅ Translation completed successfully!");
   
-      setMessages([
-        ...messages,
-        { text: translatedText, type: "bot", language: selectedLanguage },
-      ]);
-    } catch (error) {
-      console.error("❌ Error translating text:", error);
-      toast.error("❌ An error occurred while translating. Please try again.");
-    }
-  };
+        setMessages([
+          ...messages,
+          { text: translatedText, type: "bot", language: selectedLanguage },
+        ]);
+      } catch (error) {
+        console.error("❌ Error translating text:", error);
+        toast.error("❌ An error occurred while translating. Please try again.");
+      } finally {
+        setIsLoading(false);  // Hide loading state
+      }
+    };
   
 
-  return (
-    <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
-      <Toaster position="top-right" reverseOrder={false} />
-      <div className={`app-con1 ${darkMode ? "dark-mode" : "light-mode"}`}>
-        <h1 className="title-1">Linguify</h1>
-        <button className="toggle-btn" onClick={toggleTheme}>
-          {darkMode ? (
-            <i className="fas fa-sun"></i> // Sun icon for light mode
-          ) : (
-            <i className="fas fa-moon"></i> // Moon icon for dark mode
-          )}
-        </button>
-      </div>
+    return (
+      <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
+        <Toaster position="top-right" reverseOrder={false} />
+        <div className={`app-con1 ${darkMode ? "dark-mode" : "light-mode"}`}>
+          <h1 className="title-1">Linguify</h1>
+          <button className="toggle-btn" onClick={toggleTheme}>
+            {darkMode ? (
+              <i className="fas fa-sun"></i> // Sun icon for light mode
+            ) : (
+              <i className="fas fa-moon"></i> // Moon icon for dark mode
+            )}
+          </button>
+        </div>
 
-      <div className="chat-output">
-        <ChatOutput messages={messages} onSummarize={handleSummarize} onTranslate={handleTranslate}/>
+        <div className="chat-output">
+          <ChatOutput messages={messages} onSummarize={handleSummarize} onTranslate={handleTranslate} />
+        </div>
+        <div className="chat-input">
+          <ChatInput
+            onSend={handleSend}
+            inputText={inputText}
+            setInputText={setInputText}
+            selectedLanguage={selectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
+            onSummarize={handleSummarize}
+            onTranslate={handleTranslate}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
-      <div className="chat-input">
-        <ChatInput
-          onSend={handleSend}
-          inputText={inputText}
-          setInputText={setInputText}
-          selectedLanguage={selectedLanguage}
-          setSelectedLanguage={setSelectedLanguage}
-          onSummarize={handleSummarize}
-          onTranslate={handleTranslate}
-        />
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
 export default App;
 
