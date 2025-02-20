@@ -114,8 +114,11 @@ function App() {
   };
 
   useEffect(() => {
+  if (selectedLanguage !== "en") {
     initializeTranslator("en", selectedLanguage);
-  }, [selectedLanguage]);
+  }
+}, [selectedLanguage]);
+
 
   useEffect(() => {
     const initializeSummarizer = async () => {
@@ -213,56 +216,41 @@ function App() {
   };
 
   const handleTranslate = async () => {
+    if (selectedLanguage === "en") {
+      toast.error("❌ Translation from English to English is not supported.", {
+        duration: 4000,
+        style: { background: "#000", color: "#fff" },
+      });
+      return;
+    }
+  
     if (!translator) {
-      toast.error("❌ Translator API is not ready. Try again later.", {
-        duration: 4000,
-        style: {
-          background: "#000",
-          color: "#fff",
-        },
-      });
+      toast.error("❌ Translator API is not ready. Try again later.");
       return;
     }
-
+  
     if (!inputText.trim()) {
-      toast.error("❌ Please enter some text to translate.", {
-        duration: 4000,
-        style: {
-          background: "#000",
-          color: "#fff",
-        },
-      });
+      toast.error("❌ Please enter some text to translate.");
       return;
     }
-
+  
     try {
-      console.log("🌍 Translating text...");
+      console.log(`🌍 Translating from English to ${selectedLanguage}...`);
       const translatedText = await translator.translate(inputText);
       console.log("✅ Translation completed:", translatedText);
       setOutputText(translatedText);
-      toast.success("✅ Translation completed successfully!", {
-        duration: 4000,
-        style: {
-          background: "#000",
-          color: "#fff",
-        },
-      });
-
+      toast.success("✅ Translation completed successfully!");
+  
       setMessages([
         ...messages,
         { text: translatedText, type: "bot", language: selectedLanguage },
       ]);
     } catch (error) {
       console.error("❌ Error translating text:", error);
-      toast.error("❌ An error occurred while translating. Please try again.", {
-        duration: 4000,
-        style: {
-          background: "#000",
-          color: "#fff",
-        },
-      });
+      toast.error("❌ An error occurred while translating. Please try again.");
     }
   };
+  
 
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -297,3 +285,5 @@ function App() {
 }
 
 export default App;
+
+
