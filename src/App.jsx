@@ -12,8 +12,9 @@ function App() {
   const [outputText, setOutputText] = useState("");
   const [summarizer, setSummarizer] = useState(null);
   const [translator, setTranslator] = useState(null); // Store translator instance
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
+  
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
@@ -198,7 +199,7 @@ function App() {
     }
 
     try {
-      setIsLoading(true);  // Show loading state
+      setIsSummarizing(true); // Show Summarizing button state
 
       console.log("📜 Summarizing text...");
       const summary = await summarizer.summarize(lastUserMessage.text, {
@@ -229,7 +230,7 @@ function App() {
         },
       });
     } finally {
-      setIsLoading(false);
+      setIsSummarizing(false); // Hide loading state
     };
   }
 
@@ -253,7 +254,7 @@ function App() {
       }
   
       try {
-        setIsLoading(true);  // Show loading state
+        setIsTranslating(true); // Show Translating button state
 
         console.log(`🌍 Translating from English to ${selectedLanguage}...`);
         const translatedText = await translator.translate(inputText);
@@ -269,7 +270,7 @@ function App() {
         console.error("❌ Error translating text:", error);
         toast.error("❌ An error occurred while translating. Please try again.");
       } finally {
-        setIsLoading(false);  // Hide loading state
+        setIsTranslating(false); // Hide loading state
       }
     };
   
@@ -289,8 +290,8 @@ function App() {
         </div>
 
         <div className="chat-output" ref={chatContainerRef} >
-          <ChatOutput messages={messages} onSummarize={handleSummarize} onTranslate={handleTranslate} 
-            isLoading={isLoading} />
+          <ChatOutput messages={messages} onSummarize={handleSummarize} onTranslate={handleTranslate} outputText={outputText}
+            isSummarizing={isSummarizing} />
         </div>
         <div className="chat-input">
           <ChatInput
@@ -301,7 +302,8 @@ function App() {
             setSelectedLanguage={setSelectedLanguage}
             onSummarize={handleSummarize}
             onTranslate={handleTranslate}
-            isLoading={isLoading}
+            isSummarizing={isSummarizing}
+            isTranslating={isTranslating}
           />
         </div>
       </div>

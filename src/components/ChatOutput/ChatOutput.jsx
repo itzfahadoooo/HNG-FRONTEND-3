@@ -2,7 +2,7 @@ import "./ChatOutput.css";
 import PropTypes from "prop-types";
 import { toast } from "react-hot-toast"; // Import toast for error messages
 
-const ChatOutput = ({ messages, onSummarize, isLoading }) => {
+const ChatOutput = ({ messages, onSummarize, isSummarizing }) => {
   const handleSummarizeClick = (text) => {
     if (text.length < 150) {
       toast.error("❌ Text must be at least 150 characters to summarize.");
@@ -29,9 +29,9 @@ const ChatOutput = ({ messages, onSummarize, isLoading }) => {
             <button
               className="summarize-btn"
               onClick={() => handleSummarizeClick(msg.text)}
-              disabled={isLoading}
+              disabled={isSummarizing}
             >
-              {isLoading ? "Summarizing..." : "Summarize"}
+              {isSummarizing ? "Summarizing..." : "Summarize"}
             </button>
           )}
         </div>
@@ -49,7 +49,7 @@ ChatOutput.propTypes = {
     })
   ).isRequired,
   onSummarize: PropTypes.func.isRequired,
-  isLoading: PropTypes.string,
+  isSummarizing: PropTypes.string,
 };
 
 export default ChatOutput;

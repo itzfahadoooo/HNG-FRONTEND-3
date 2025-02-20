@@ -9,7 +9,8 @@ const ChatInput = ({
   setSelectedLanguage,
   onSummarize,
   onTranslate,
-  isLoading
+  isSummarizing,
+  isTranslating
 }) => {
   const handleKeyDown = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -57,12 +58,12 @@ const ChatInput = ({
           </select>
         </div>
         <div className="action-buttons">
-          <button  onClick={onSummarize} className="summarize-button action-button"   disabled={isLoading}
+          <button  onClick={onSummarize} className="summarize-button action-button"   disabled={isSummarizing}
           >
-            {isLoading ? "Summarizing..." : "Summarize"}
+            {isSummarizing ? "Summarizing..." : "Summarize"}
           </button>
-          <button onClick={onTranslate} className="translate-button action-button" disabled={isLoading}>
-            {isLoading ? "Translating..." : "Translate"}
+          <button onClick={onTranslate} className="translate-button action-button" disabled={isTranslating}>
+            {isTranslating ? "Translating..." : "Translate"}
           </button>
         </div>
       </div>
@@ -78,7 +79,8 @@ ChatInput.propTypes = {
   setSelectedLanguage: PropTypes.func.isRequired,
   onSummarize: PropTypes.func.isRequired,
   onTranslate: PropTypes.func.isRequired,
-  isLoading: PropTypes.string,
+  isSummarizing: PropTypes.string,
+  isTranslating: PropTypes.string,
 };
 
 export default ChatInput;
