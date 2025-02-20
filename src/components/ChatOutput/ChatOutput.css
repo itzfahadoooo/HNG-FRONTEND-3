@@ -54,3 +54,18 @@
     margin-top: 5px;
   }
   
+  .summarize-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .summarize-btn:hover {
+    background-color: #0056b3;
+  }
+  

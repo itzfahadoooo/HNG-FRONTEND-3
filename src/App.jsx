@@ -279,7 +279,7 @@ function App() {
       </div>
 
       <div className="chat-output">
-        <ChatOutput messages={messages} />
+        <ChatOutput messages={messages} onSummarize={handleSummarize} onTranslate={handleTranslate}/>
       </div>
       <div className="chat-input">
         <ChatInput
