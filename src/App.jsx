@@ -3,6 +3,8 @@ import ChatInput from "./components/ChatInput/ChatInput";
 import ChatOutput from "./components/ChatOutput/ChatOutput";
 import "./App.css";
 import { detectLanguage } from "./languagedetection";
+import { Toaster, toast } from "react-hot-toast";
+
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -34,7 +36,7 @@ function App() {
   const initializeTranslator = async (sourceLanguage, targetLanguage) => {
     try {
       if (!("ai" in self && "translator" in self.ai)) {
-        alert("❌ Translator API is not supported in this browser.");
+        toast.error("❌ Translator API is not supported in this browser.");
         return null;
       }
 
@@ -66,7 +68,7 @@ function App() {
       );
 
       if (availability === "no") {
-        alert(
+        toast.error(
           `❌ Translation from ${sourceLanguage} to ${targetLanguage} is not supported.`
         );
         return null;
@@ -87,7 +89,7 @@ function App() {
       setTranslator(translatorInstance); // Store translator instance in state
     } catch (error) {
       console.error("❌ Error initializing Translator:", error);
-      alert("An error occurred while initializing the Translator API.");
+      toast.error("An error occurred while initializing the Translator API.");
     }
   };
 
@@ -137,12 +139,12 @@ function App() {
 
   const handleSummarize = async () => {
     if (!summarizer) {
-      alert("❌ Summarizer API is not ready. Try again later.");
+      toast.error("❌ Summarizer API is not ready. Try again later.");
       return;
     }
 
     if (!inputText.trim()) {
-      alert("❌ Please enter some text to summarize.");
+      toast.error("❌ Please enter some text to summarize.");
       return;
     }
 
@@ -158,18 +160,18 @@ function App() {
       setMessages([...messages, { text: summary, type: "bot", language: "en" }]);
     } catch (error) {
       console.error("❌ Error summarizing text:", error);
-      alert("❌ An error occurred while summarizing. Please try again.");
+      toast.error("❌ An error occurred while summarizing. Please try again.");
     }
   };
 
   const handleTranslate = async () => {
     if (!translator) {
-      alert("❌ Translator API is not ready. Try again later.");
+      toast.error("❌ Translator API is not ready. Try again later.");
       return;
     }
 
     if (!inputText.trim()) {
-      alert("❌ Please enter some text to translate.");
+      toast.error("❌ Please enter some text to translate.");
       return;
     }
 
@@ -181,12 +183,13 @@ function App() {
       setMessages([...messages, { text: translatedText, type: "bot", language: selectedLanguage }]);
     } catch (error) {
       console.error("❌ Error translating text:", error);
-      alert("❌ An error occurred while translating. Please try again.");
+      toast.error("❌ An error occurred while translating. Please try again.");
     }
   };
 
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
+            <Toaster position="top-right" reverseOrder={false} />
       <div className={`app-con1 ${darkMode ? "dark-mode" : "light-mode"}`}>
         <h1 className="title-1">Linguify</h1>
       <button className="toggle-btn" onClick={toggleTheme}>

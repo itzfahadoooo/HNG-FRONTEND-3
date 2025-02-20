@@ -29,7 +29,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 200px;
+  width: 30%;
+  align-self: center;
   border-radius: 0 0 20px 20px;
   transition: background 0.3s;
 
