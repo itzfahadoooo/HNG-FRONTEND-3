@@ -23,16 +23,19 @@ function App() {
   }, [messages]);
   
 
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("theme") === "dark" // Ensure proper theme loading
-  );
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") ? localStorage.getItem("theme") === "dark" : true;
+  });
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme) {
       setDarkMode(storedTheme === "dark");
+    } else {
+      localStorage.setItem("theme", "dark"); // Default to dark
     }
   }, []);
+  
 
   // Toggle light and dark mode
   const toggleTheme = () => {
