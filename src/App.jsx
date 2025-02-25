@@ -48,7 +48,7 @@ function App() {
   const initializeTranslator = async (sourceLanguage, targetLanguage) => {
     try {
       if (!("ai" in self && "translator" in self.ai)) {
-        toast.error("❌ Translator API is not supported in this browser.", {
+        toast.error("❌ Translator API is not supported right now in this browser.", {
           duration: 4000,
           style: {
             background: "#000",
